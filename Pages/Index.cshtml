@@ -1,0 +1,33 @@
+﻿@page
+@using System.Security.Claims
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+@if(User.Identity.IsAuthenticated)
+{
+    <p>
+        Authenticated!
+    </p>
+    <p>
+        Username: @User.Claims.FirstOrDefault(c => c.Type=="cognito:username")?.Value
+    </p>
+    <p>
+        Email address: @User.Claims.FirstOrDefault(c => c.Type=="http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value
+    </p>
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        var identity = User.Identity as ClaimsIdentity; 
+
+        string username = identity.Claims.FirstOrDefault(c => c.Type == "cognito:username")?.Value;       
+        <h1>Welcome @username</h1>
+
+    }
+</div>
